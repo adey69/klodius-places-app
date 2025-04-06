@@ -1,14 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
 import { debounce } from 'lodash';
 import { useCallback, useState } from 'react';
-import { useLazyAutocompleteQuery } from '../../redux';
+import {
+  PlacesSliceActions,
+  previousSearchesSelector,
+  useAppDispatch,
+  useAppSelector,
+  useLazyAutocompleteQuery,
+} from '../../redux';
 
 export const useSearchScreen = () => {
   const [searchText, setSearchText] = useState('');
-  const [predictions, setPredictions] = useState<Place[]>([]);
+  const [predictions, setPredictions] = useState<PlacePrediction[]>([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const navigation = useNavigation();
+
   const [fetchPlaces] = useLazyAutocompleteQuery();
+
+  const dispatch = useAppDispatch();
+
+  const previousSearches = useAppSelector(previousSearchesSelector);
 
   const fetchPredictions = useCallback(async (text: string) => {
     if (!text) {
@@ -32,34 +43,48 @@ export const useSearchScreen = () => {
 
   const debouncedFetch = useCallback(debounce(fetchPredictions, 300), []);
 
-  const handleInputChange = useCallback(
-    (text: string) => {
-      setSearchText(text);
-      if (!text) {
-        setPredictions([]);
-        return;
-      }
-      debouncedFetch(text);
-    },
-    [debouncedFetch],
-  );
+  const handleInputChange = useCallback((text: string) => {
+    setSearchText(text);
+    if (!text) {
+      setPredictions([]);
+      return;
+    }
+    debouncedFetch(text);
+  }, []);
 
-  const handleSelect = useCallback((place: Place) => {
+  const handleSelect = useCallback((place: PlacePrediction) => {
     setSearchText(place.description);
+    dispatch(
+      PlacesSliceActions.addToPreviousSearches({
+        id: place.place_id,
+        name: place.description,
+      }),
+    );
     setPredictions([]);
+    navigateToPlaceDetails(place.place_id);
+  }, []);
+
+  const navigateToPlaceDetails = useCallback((placeId: string) => {
     navigation.navigate('PlaceDetails', {
-      placeId: place.place_id,
+      placeId,
     });
+  }, []);
+
+  const removeFromPreviousSearches = useCallback((id: string) => {
+    dispatch(PlacesSliceActions.removeFromPreviousSearches(id));
   }, []);
 
   return {
     searchText,
     isInputFocused,
     predictions,
+    previousSearches,
     setSearchText,
     fetchPredictions,
     handleInputChange,
     handleSelect,
     setIsInputFocused,
+    navigateToPlaceDetails,
+    removeFromPreviousSearches,
   };
 };

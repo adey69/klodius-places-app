@@ -14,11 +14,21 @@ import { PlacesApi } from '../api';
 import REDUX_PERSIST from './reduxPersist';
 import RootReducer from './rootReducer';
 
+const createEnhancers = (getDefaultEnhancers: any) => {
+  if (__DEV__) {
+    const reactotron = require('../../../ReactotronConfig').default;
+    return getDefaultEnhancers().concat(reactotron.createEnhancer());
+  } else {
+    return getDefaultEnhancers();
+  }
+};
+
 function CreateStore() {
   const middlewares: Middleware[] = [PlacesApi.middleware];
 
   const persistedReducer = persistReducer(
     REDUX_PERSIST.storeConfig,
+    //@ts-ignore
     RootReducer,
   );
 
@@ -31,6 +41,7 @@ function CreateStore() {
         },
       }).concat(middlewares),
     devTools: process.env.NODE_ENV !== 'production',
+    enhancers: createEnhancers,
   });
 
   const persistor = persistStore(reduxStore);

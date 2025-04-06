@@ -12,7 +12,6 @@ export const useStyles = () => {
     inputContainer: {
       ...Alignment.PRsmall,
       flexDirection: 'row',
-      justifyContent: 'space-between',
       alignItems: 'center',
       borderWidth: 1,
       borderColor: Colors.borderGray,
@@ -20,6 +19,7 @@ export const useStyles = () => {
     },
     input: {
       ...Alignment.PHsmall,
+      flex: 1,
       height: 40,
     },
     inputContainerFocused: {

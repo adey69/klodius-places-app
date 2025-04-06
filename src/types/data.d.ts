@@ -1,4 +1,4 @@
-interface Place {
+interface PlacePrediction {
   description: string;
   matched_substrings: {
     length: number;
@@ -19,4 +19,9 @@ interface Place {
     value: string;
   }[];
   types: string[];
+}
+
+interface PreviousSearch {
+  id: string;
+  name: string;
 }

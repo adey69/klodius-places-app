@@ -2,31 +2,29 @@ import React, { useCallback } from 'react';
 import {
   FlatList,
   Image,
+  ListRenderItemInfo,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Separator } from '../../components';
+import { ListEmptyView, Separator } from '../../components';
 import { Images } from '../../theme';
 import { useStyles } from './styles';
 import { useSearchScreen } from './useSearchScreen';
-
-const mockRecentPlaces = [
-  { id: '1', name: 'Central Park, New York' },
-  { id: '2', name: 'Times Square, NYC' },
-  { id: '3', name: 'Golden Gate Bridge, SF' },
-];
 
 const SearchScreen = () => {
   const styles = useStyles();
   const {
     searchText,
     predictions,
+    previousSearches,
+    isInputFocused,
     handleInputChange,
     handleSelect,
-    isInputFocused,
     setIsInputFocused,
+    navigateToPlaceDetails,
+    removeFromPreviousSearches,
   } = useSearchScreen();
 
   const renderSeparator = useCallback(() => {
@@ -34,10 +32,13 @@ const SearchScreen = () => {
   }, []);
 
   const renderHistoryItem = useCallback(
-    ({ item }) => (
-      <TouchableOpacity style={styles.historyItem}>
-        <Text style={styles.placeText}>{item.name}</Text>
-        <TouchableOpacity>
+    ({ item: previousSearch }: ListRenderItemInfo<PreviousSearch>) => (
+      <TouchableOpacity
+        style={styles.historyItem}
+        onPress={() => navigateToPlaceDetails(previousSearch.id)}>
+        <Text style={styles.placeText}>{previousSearch.name}</Text>
+        <TouchableOpacity
+          onPress={() => removeFromPreviousSearches(previousSearch.id)}>
           <Image source={Images.cross} style={styles.searchListCross} />
         </TouchableOpacity>
       </TouchableOpacity>
@@ -46,18 +47,18 @@ const SearchScreen = () => {
   );
 
   const renderSuggestionsItem = useCallback(
-    ({ item }) => (
+    ({ item: place }: ListRenderItemInfo<PlacePrediction>) => (
       <TouchableOpacity
-        onPress={() => handleSelect(item)}
+        onPress={() => handleSelect(place)}
         style={styles.predictionItem}>
-        <Text style={styles.predictionText}>{item.description}</Text>
+        <Text style={styles.predictionText}>{place.description}</Text>
       </TouchableOpacity>
     ),
     [],
   );
 
   const renderHistoryHeader = useCallback(
-    () => <Text style={styles.header}>Recent Searches</Text>,
+    () => <Text style={styles.header}>Previous Searches</Text>,
     [],
   );
 
@@ -75,7 +76,7 @@ const SearchScreen = () => {
             value={searchText}
             onChangeText={handleInputChange}
             placeholder="Search for a place"
-            style={[styles.input]}
+            style={styles.input}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
           />
@@ -88,27 +89,29 @@ const SearchScreen = () => {
             </TouchableOpacity>
           )}
         </View>
-        {isInputFocused &&
-          searchText?.length > 0 &&
-          predictions?.length > 0 && (
-            <FlatList
-              data={predictions}
-              style={styles.listContainer}
-              contentContainerStyle={styles.listContentContainer}
-              keyExtractor={item => item.place_id}
-              renderItem={renderSuggestionsItem}
-              bounces={false}
-              keyboardShouldPersistTaps="handled"
-            />
-          )}
+        {isInputFocused && searchText?.length > 0 && (
+          <FlatList
+            data={predictions}
+            style={styles.listContainer}
+            contentContainerStyle={styles.listContentContainer}
+            keyExtractor={item => item.place_id}
+            renderItem={renderSuggestionsItem}
+            bounces={false}
+            keyboardShouldPersistTaps="handled"
+            ListEmptyComponent={<ListEmptyView message="No results found" />}
+          />
+        )}
       </View>
       <FlatList
-        data={mockRecentPlaces}
+        data={previousSearches}
         keyExtractor={item => item.id}
         ListHeaderComponent={renderHistoryHeader}
         renderItem={renderHistoryItem}
         contentContainerStyle={styles.searchesListContainer}
         ItemSeparatorComponent={renderSeparator}
+        ListEmptyComponent={
+          <ListEmptyView message="No previous searches yet" />
+        }
       />
     </View>
   );

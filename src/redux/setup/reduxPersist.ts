@@ -1,18 +1,15 @@
 import { createWhitelistFilter } from 'redux-persist-transform-filter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Whitelist any slices that you want to persist
-// const gradeReduxWhitelist = createWhitelistFilter('grade', [
-//   'lessonCompletion',
-// ]);
+const placesReduxWhitelist = createWhitelistFilter('places');
 
 const REDUX_PERSIST = {
-  active: true,
+  active: false,
   storeConfig: {
     key: 'primary',
     storage: AsyncStorage,
-    // transforms: [gradeReduxWhitelist],
-    // whitelist: ['grade'],
+    transforms: [placesReduxWhitelist],
+    whitelist: ['places'],
   },
 };
 

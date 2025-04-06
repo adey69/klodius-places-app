@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import { useCallback, useState } from 'react';
-import { GOOGLE_MAPS_WEB_API_KEY } from '../../config';
+import { GOOGLE_MAPS_API_KEY } from '../../config';
 
 export const useSearchScreen = () => {
   const [searchText, setSearchText] = useState('');
@@ -22,7 +22,7 @@ export const useSearchScreen = () => {
         {
           params: {
             input: text,
-            key: GOOGLE_MAPS_WEB_API_KEY,
+            key: GOOGLE_MAPS_API_KEY,
           },
         },
       );

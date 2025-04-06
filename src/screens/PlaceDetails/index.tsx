@@ -1,14 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useStyles } from './styles';
 import { usePlaceDetails } from './usePlaceDetails';
 
 const MapScreen = () => {
   const styles = useStyles();
   const { place } = usePlaceDetails();
-
-  console.log({ place });
 
   return (
     <View style={styles.container}>
@@ -19,6 +17,7 @@ const MapScreen = () => {
             <Text style={styles.details}>{place.formatted_address}</Text>
           </View>
           <MapView
+            provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={{
               latitude: place.geometry.location.lat,

@@ -7,7 +7,8 @@ import GoogleMaps
 @main
 class AppDelegate: RCTAppDelegate {
   override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-       
+    let apiKey = RNCConfig.env(for: "GOOGLE_MAPS_API_KEY") ?? ""
+    GMSServices.provideAPIKey(apiKey)
     
     self.moduleName = "PlacesApp"
     self.dependencyProvider = RCTAppDependencyProvider()

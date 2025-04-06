@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { GOOGLE_MAPS_WEB_API_KEY } from '../../config';
 import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
+import { GOOGLE_MAPS_API_KEY } from '../../config';
 
 export const usePlaceDetails = () => {
   const [place, setPlace] = useState();
@@ -13,7 +13,7 @@ export const usePlaceDetails = () => {
         {
           params: {
             place_id: route?.params?.placeId ?? '',
-            key: GOOGLE_MAPS_WEB_API_KEY,
+            key: GOOGLE_MAPS_API_KEY,
             fields: 'geometry,name,formatted_address', // add more if needed
           },
         },

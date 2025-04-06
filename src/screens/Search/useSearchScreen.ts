@@ -13,7 +13,7 @@ export const useSearchScreen = () => {
   const [searchText, setSearchText] = useState('');
   const [predictions, setPredictions] = useState<PlacePrediction[]>([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const [fetchPlaces] = useLazyAutocompleteQuery();
 
@@ -61,14 +61,21 @@ export const useSearchScreen = () => {
       }),
     );
     setPredictions([]);
-    navigateToPlaceDetails(place.place_id);
+    navigateToPlaceDetails(
+      place.place_id,
+      place.structured_formatting.main_text,
+    );
   }, []);
 
-  const navigateToPlaceDetails = useCallback((placeId: string) => {
-    navigation.navigate('PlaceDetails', {
-      placeId,
-    });
-  }, []);
+  const navigateToPlaceDetails = useCallback(
+    (placeId: string, placeName: string) => {
+      navigation.navigate('PlaceDetailsScreen', {
+        placeId,
+        placeName,
+      });
+    },
+    [],
+  );
 
   const removeFromPreviousSearches = useCallback((id: string) => {
     dispatch(PlacesSliceActions.removeFromPreviousSearches(id));

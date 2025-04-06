@@ -14,12 +14,7 @@ if (__DEV__) {
   require('./ReactotronConfig');
 }
 
-export type RootStackParamList = {
-  Search: undefined;
-  PlaceDetails: { placeId: string };
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamsList>();
 
 const { reduxStore, persistor } = CreateStore();
 
@@ -29,11 +24,24 @@ export default function App() {
       <Provider store={reduxStore}>
         <PersistGate loading={null} persistor={persistor}>
           <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen name="Search" component={SearchScreen} />
+            <Stack.Navigator
+              screenOptions={{
+                headerTitleAlign: 'center',
+                headerBackTitle: '',
+              }}>
               <Stack.Screen
-                name="PlaceDetails"
+                name="SearchScreen"
+                component={SearchScreen}
+                options={{
+                  headerTitle: 'Search Places',
+                }}
+              />
+              <Stack.Screen
+                name="PlaceDetailsScreen"
                 component={PlaceDetailsScreen}
+                options={{
+                  headerTitle: 'Place Details',
+                }}
               />
             </Stack.Navigator>
           </NavigationContainer>

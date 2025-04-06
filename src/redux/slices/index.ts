@@ -1,2 +1,2 @@
-export { default as PlacesSliceActions } from './PlacesSlice';
-export { reducer as PlacesSliceReducer } from './PlacesSlice';
+export { default as PlacesSliceActions } from './placesSlice';
+export { reducer as PlacesSliceReducer } from './placesSlice';

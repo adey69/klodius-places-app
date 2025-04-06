@@ -60,12 +60,11 @@ export const useStyles = () => {
     historyItem: {
       paddingVertical: 12,
       flexDirection: 'row',
-      justifyContent: 'space-between',
       alignItems: 'center',
     },
     placeText: {
       fontSize: 16,
-      color: '#333',
+      flex: 1,
     },
     searchListCross: {
       height: 20,

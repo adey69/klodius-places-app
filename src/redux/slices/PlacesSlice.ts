@@ -13,7 +13,10 @@ const PlacesSlice = createSlice({
       state,
       { payload }: PayloadAction<PreviousSearch>,
     ) => {
-      state.previousSearches = [...(state.previousSearches ?? []), payload];
+      state.previousSearches = state.previousSearches.filter(
+        prevSearch => prevSearch.id !== payload.id,
+      );
+      state.previousSearches = [payload, ...(state.previousSearches ?? [])];
     },
     removeFromPreviousSearches: (state, { payload }: PayloadAction<string>) => {
       state.previousSearches = remove(

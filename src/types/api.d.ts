@@ -3,7 +3,7 @@ interface IAutoCompleteRequest {
 }
 
 interface IAutocompleteResponse {
-  predictions: Place[];
+  predictions: PlacePrediction[];
   status: string;
 }
 

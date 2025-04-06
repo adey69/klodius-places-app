@@ -35,7 +35,9 @@ const SearchScreen = () => {
     ({ item: previousSearch }: ListRenderItemInfo<PreviousSearch>) => (
       <TouchableOpacity
         style={styles.historyItem}
-        onPress={() => navigateToPlaceDetails(previousSearch.id)}>
+        onPress={() =>
+          navigateToPlaceDetails(previousSearch.id, previousSearch.name)
+        }>
         <Text style={styles.placeText}>{previousSearch.name}</Text>
         <TouchableOpacity
           onPress={() => removeFromPreviousSearches(previousSearch.id)}>

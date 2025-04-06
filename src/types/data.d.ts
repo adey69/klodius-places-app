@@ -21,6 +21,12 @@ interface PlacePrediction {
   types: string[];
 }
 
+interface PlacePredictionTransformed {
+  description: string;
+  id: string;
+  name: string;
+}
+
 interface PreviousSearch {
   id: string;
   name: string;

@@ -7,6 +7,10 @@ interface IAutocompleteResponse {
   status: string;
 }
 
+interface IAutoCompleteTransformedResponse {
+  predictions: PlacePredictionTransformed[];
+}
+
 interface IPlaceDetailsRequest {
   placeId: string;
 }
@@ -23,4 +27,13 @@ interface IPlaceDetailsResponse {
     name: string;
   };
   status: string;
+}
+
+interface IPlaceDetailsTransformedResponse {
+  address: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  name: string;
 }

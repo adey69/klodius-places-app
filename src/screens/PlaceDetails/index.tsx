@@ -14,24 +14,24 @@ const MapScreen = () => {
         <>
           <View style={styles.detailsContainer}>
             <Text style={styles.details}>{place.name}</Text>
-            <Text style={styles.details}>{place.formatted_address}</Text>
+            <Text style={styles.details}>{place.address}</Text>
           </View>
           <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={{
-              latitude: place.geometry.location.lat,
-              longitude: place.geometry.location.lng,
+              latitude: place.coordinates.lat,
+              longitude: place.coordinates.lng,
               latitudeDelta: 0.01,
               longitudeDelta: 0.01,
             }}>
             <Marker
               coordinate={{
-                latitude: place.geometry.location.lat,
-                longitude: place.geometry.location.lng,
+                latitude: place.coordinates.lat,
+                longitude: place.coordinates.lng,
               }}
               title={place.name}
-              description={place.formatted_address}
+              description={place.address}
             />
           </MapView>
         </>

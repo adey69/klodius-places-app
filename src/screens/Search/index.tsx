@@ -49,7 +49,7 @@ const SearchScreen = () => {
   );
 
   const renderSuggestionsItem = useCallback(
-    ({ item: place }: ListRenderItemInfo<PlacePrediction>) => (
+    ({ item: place }: ListRenderItemInfo<PlacePredictionTransformed>) => (
       <TouchableOpacity
         onPress={() => handleSelect(place)}
         style={styles.predictionItem}>
@@ -96,7 +96,7 @@ const SearchScreen = () => {
             data={predictions}
             style={styles.listContainer}
             contentContainerStyle={styles.listContentContainer}
-            keyExtractor={item => item.place_id}
+            keyExtractor={item => item.id}
             renderItem={renderSuggestionsItem}
             bounces={false}
             keyboardShouldPersistTaps="handled"

@@ -17,5 +17,5 @@ export const usePlaceDetails = () => {
     });
   }, [route?.params?.placeName]);
 
-  return { place: place?.result };
+  return { place };
 };

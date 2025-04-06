@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { debounce } from 'lodash';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import {
   PlacesSliceActions,
   previousSearchesSelector,
@@ -11,8 +11,11 @@ import {
 
 export const useSearchScreen = () => {
   const [searchText, setSearchText] = useState('');
-  const [predictions, setPredictions] = useState<PlacePrediction[]>([]);
+  const [predictions, setPredictions] = useState<PlacePredictionTransformed[]>(
+    [],
+  );
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const isSelecting = useRef(false);
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const [fetchPlaces] = useLazyAutocompleteQuery();
@@ -21,29 +24,31 @@ export const useSearchScreen = () => {
 
   const previousSearches = useAppSelector(previousSearchesSelector);
 
-  const fetchPredictions = useCallback(async (text: string) => {
-    if (!text) {
-      setPredictions([]);
-      return;
-    }
-
-    try {
-      const response = await fetchPlaces({ input: text }).unwrap();
-
-      if (response.predictions) {
-        setPredictions(response.predictions);
-      } else {
+  const fetchPredictions = useCallback(
+    async (text: string) => {
+      if (!text.trim()) {
         setPredictions([]);
-        console.warn('Places API error:', response.status);
+        return;
       }
-    } catch (err) {
-      console.error('Autocomplete fetch error', err);
-    }
-  }, []);
+      try {
+        const { predictions: fetchedPredictions = [] } = await fetchPlaces({
+          input: text,
+        }).unwrap();
+        setPredictions(fetchedPredictions);
+      } catch (error) {
+        setPredictions([]);
+      }
+    },
+    [fetchPlaces],
+  );
 
   const debouncedFetch = useCallback(debounce(fetchPredictions, 300), []);
 
   const handleInputChange = useCallback((text: string) => {
+    if (isSelecting.current) {
+      isSelecting.current = false;
+      return;
+    }
     setSearchText(text);
     if (!text) {
       setPredictions([]);
@@ -52,19 +57,17 @@ export const useSearchScreen = () => {
     debouncedFetch(text);
   }, []);
 
-  const handleSelect = useCallback((place: PlacePrediction) => {
+  const handleSelect = useCallback((place: PlacePredictionTransformed) => {
+    isSelecting.current = true;
     setSearchText(place.description);
     dispatch(
       PlacesSliceActions.addToPreviousSearches({
-        id: place.place_id,
+        id: place.id,
         name: place.description,
       }),
     );
     setPredictions([]);
-    navigateToPlaceDetails(
-      place.place_id,
-      place.structured_formatting.main_text,
-    );
+    navigateToPlaceDetails(place.id, place.name);
   }, []);
 
   const navigateToPlaceDetails = useCallback(

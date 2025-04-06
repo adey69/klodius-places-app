@@ -12,6 +12,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 if (__DEV__) {
   require('./ReactotronConfig');
+  const originalConsoleLog = console.log;
+  console.log = (...args) => {
+    originalConsoleLog(...args);
+  };
 }
 
 const Stack = createStackNavigator<RootStackParamsList>();
@@ -33,7 +37,7 @@ export default function App() {
                 name="SearchScreen"
                 component={SearchScreen}
                 options={{
-                  headerTitle: 'Search Places',
+                  headerTitle: 'Explore the world!',
                 }}
               />
               <Stack.Screen

@@ -15,23 +15,29 @@ export const useStyles = () => {
       alignItems: 'center',
       borderWidth: 1,
       borderColor: Colors.borderGray,
-      borderRadius: 8,
+      borderRadius: 12,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.05,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    inputContainerFocused: {
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
     },
     input: {
       ...Alignment.PHsmall,
       flex: 1,
       height: 40,
     },
-    inputContainerFocused: {
-      borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
-    },
     predictionItem: {
-      ...Alignment.PHsmall,
+      ...Alignment.PHmedium,
       paddingVertical: 12,
     },
     predictionText: {
-      fontSize: 14,
+      fontSize: 15,
     },
     listContainer: {
       position: 'absolute',
@@ -69,6 +75,8 @@ export const useStyles = () => {
     searchListCross: {
       height: 20,
       width: 20,
+      tintColor: Colors.borderGray,
+      opacity: 0.6,
     },
     inputFieldCross: {
       height: 20,

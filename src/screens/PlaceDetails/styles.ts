@@ -12,10 +12,23 @@ export const useStyles = () => {
       bottom: 0,
       zIndex: -10,
     },
-    details: { padding: 10, fontSize: 16 },
+    details: { ...Alignment.MLsmall, fontSize: 16, fontWeight: '400' },
+    detailLabel: { ...Alignment.Psmall, fontSize: 16, fontWeight: 'bold' },
     detailsContainer: {
       ...Alignment.Plarge,
       backgroundColor: Colors.white,
+      borderBottomLeftRadius: 24,
+      borderBottomRightRadius: 24,
+      shadowColor: Colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    centeredContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 };

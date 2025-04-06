@@ -1,20 +1,35 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useStyles } from './styles';
 import { usePlaceDetails } from './usePlaceDetails';
+import { Colors } from '../../theme';
 
 const MapScreen = () => {
   const styles = useStyles();
-  const { place } = usePlaceDetails();
+  const { place, isFetchingPlaceDetails } = usePlaceDetails();
+
+  if (isFetchingPlaceDetails) {
+    return (
+      <View style={styles.centeredContainer}>
+        <ActivityIndicator color={Colors.grayText} size="large" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      {place && (
+      {place ? (
         <>
           <View style={styles.detailsContainer}>
-            <Text style={styles.details}>{place.name}</Text>
-            <Text style={styles.details}>{place.address}</Text>
+            <Text style={styles.detailLabel}>
+              Place:
+              <Text style={styles.details}> {place.name}</Text>
+            </Text>
+            <Text style={styles.detailLabel}>
+              Address:
+              <Text style={styles.details}> {place.address}</Text>
+            </Text>
           </View>
           <MapView
             provider={PROVIDER_GOOGLE}
@@ -35,6 +50,10 @@ const MapScreen = () => {
             />
           </MapView>
         </>
+      ) : (
+        <View style={styles.centeredContainer}>
+          <Text style={styles.details}>Place not found</Text>
+        </View>
       )}
     </View>
   );

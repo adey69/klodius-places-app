@@ -6,10 +6,11 @@ export const usePlaceDetails = () => {
   const route = useRoute<PlaceDetailsScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  const { data: place } = usePlaceDetailsQuery(
-    { placeId: route?.params?.placeId ?? '' },
-    { skip: !route?.params?.placeId },
-  );
+  const { data: place, isFetching: isFetchingPlaceDetails } =
+    usePlaceDetailsQuery(
+      { placeId: route?.params?.placeId ?? '' },
+      { skip: !route?.params?.placeId },
+    );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -17,5 +18,5 @@ export const usePlaceDetails = () => {
     });
   }, [route?.params?.placeName]);
 
-  return { place };
+  return { place, isFetchingPlaceDetails };
 };

@@ -20,6 +20,7 @@ const SearchScreen = () => {
     predictions,
     previousSearches,
     isInputFocused,
+    isFetchingPredictions,
     handleInputChange,
     handleSelect,
     setIsInputFocused,
@@ -60,7 +61,7 @@ const SearchScreen = () => {
   );
 
   const renderHistoryHeader = useCallback(
-    () => <Text style={styles.header}>Previous Searches</Text>,
+    () => <Text style={styles.header}>🔎 Your Previous Searches</Text>,
     [],
   );
 
@@ -77,7 +78,7 @@ const SearchScreen = () => {
           <TextInput
             value={searchText}
             onChangeText={handleInputChange}
-            placeholder="Search for a place"
+            placeholder="Search for a place, e.g. Tokyo Tower"
             style={styles.input}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
@@ -100,7 +101,12 @@ const SearchScreen = () => {
             renderItem={renderSuggestionsItem}
             bounces={false}
             keyboardShouldPersistTaps="handled"
-            ListEmptyComponent={<ListEmptyView message="No results found" />}
+            ListEmptyComponent={
+              <ListEmptyView
+                message="No results found"
+                isLoading={isFetchingPredictions}
+              />
+            }
           />
         )}
       </View>
@@ -112,8 +118,9 @@ const SearchScreen = () => {
         contentContainerStyle={styles.searchesListContainer}
         ItemSeparatorComponent={renderSeparator}
         ListEmptyComponent={
-          <ListEmptyView message="No previous searches yet" />
+          <ListEmptyView message="Make a search to start creating your search history!" />
         }
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

@@ -14,6 +14,7 @@ export const useSearchScreen = () => {
   const [predictions, setPredictions] = useState<PlacePredictionTransformed[]>(
     [],
   );
+  const [isFetchingPredictions, setIsFetchingPredictions] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const isSelecting = useRef(false);
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -24,23 +25,22 @@ export const useSearchScreen = () => {
 
   const previousSearches = useAppSelector(previousSearchesSelector);
 
-  const fetchPredictions = useCallback(
-    async (text: string) => {
-      if (!text.trim()) {
-        setPredictions([]);
-        return;
-      }
-      try {
-        const { predictions: fetchedPredictions = [] } = await fetchPlaces({
-          input: text,
-        }).unwrap();
-        setPredictions(fetchedPredictions);
-      } catch (error) {
-        setPredictions([]);
-      }
-    },
-    [fetchPlaces],
-  );
+  const fetchPredictions = useCallback(async (text: string) => {
+    if (!text.trim()) {
+      setPredictions([]);
+      return;
+    }
+    try {
+      const { predictions: fetchedPredictions = [] } = await fetchPlaces({
+        input: text,
+      }).unwrap();
+      setPredictions(fetchedPredictions);
+    } catch (error) {
+      setPredictions([]);
+    } finally {
+      setIsFetchingPredictions(false);
+    }
+  }, []);
 
   const debouncedFetch = useCallback(debounce(fetchPredictions, 300), []);
 
@@ -54,6 +54,7 @@ export const useSearchScreen = () => {
       setPredictions([]);
       return;
     }
+    setIsFetchingPredictions(true);
     debouncedFetch(text);
   }, []);
 
@@ -89,8 +90,8 @@ export const useSearchScreen = () => {
     isInputFocused,
     predictions,
     previousSearches,
+    isFetchingPredictions,
     setSearchText,
-    fetchPredictions,
     handleInputChange,
     handleSelect,
     setIsInputFocused,

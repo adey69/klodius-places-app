@@ -15,6 +15,12 @@ if linkage != nil
 end
 
 target 'PlacesApp' do
+  # React Native Maps dependencies
+
+rn_maps_path = '../node_modules/react-native-maps'
+pod 'react-native-google-maps', :path => rn_maps_path
+pod 'react-native-config', :path => '../node_modules/react-native-config'
+
   config = use_native_modules!
 
   use_react_native!(
@@ -31,5 +37,6 @@ target 'PlacesApp' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+    
   end
 end

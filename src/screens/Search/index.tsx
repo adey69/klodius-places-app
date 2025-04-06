@@ -41,7 +41,8 @@ const SearchScreen = () => {
         }>
         <Text style={styles.placeText}>{previousSearch.name}</Text>
         <TouchableOpacity
-          onPress={() => removeFromPreviousSearches(previousSearch.id)}>
+          onPress={() => removeFromPreviousSearches(previousSearch.id)}
+          hitSlop={styles.hitSlop}>
           <Image source={Images.cross} style={styles.searchListCross} />
         </TouchableOpacity>
       </TouchableOpacity>
@@ -67,6 +68,8 @@ const SearchScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Image source={Images.globe} style={styles.globeImage} />
+      <Text style={styles.tagline}>Find places anywhere on Earth</Text>
       <View>
         <View
           style={[
@@ -84,7 +87,9 @@ const SearchScreen = () => {
             onBlur={() => setIsInputFocused(false)}
           />
           {searchText?.length > 0 && (
-            <TouchableOpacity onPress={() => handleInputChange('')}>
+            <TouchableOpacity
+              onPress={() => handleInputChange('')}
+              hitSlop={styles.hitSlop}>
               <Image
                 source={Images.crossFilled}
                 style={styles.inputFieldCross}

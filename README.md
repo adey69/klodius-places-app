@@ -1,4 +1,8 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# PlacesApp
+
+## Overview
+
+PlacesApp is a React Native application that allows users to explore and view details about various places. It uses modern libraries and tools to provide a seamless user experience.
 
 # Getting Started
 
@@ -62,36 +66,34 @@ If everything is set up correctly, you should see your new app running in the An
 
 This is one way to run your app — you can also build it directly from Android Studio or Xcode.
 
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
 ## Congratulations! :tada:
 
-You've successfully run and modified your React Native App. :partying_face:
+You've successfully run the Places App. :partying_face:
 
-### Now what?
+## Major Libraries Used
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+- **React Navigation**: For navigation between screens.
+- **Redux**: For state management.
+- **Redux Persist**: To persist the Redux store across app restarts.
+- **React Native Safe Area Context**: To handle safe area insets for different devices.
+- **Reactotron**: For debugging in development mode.
+- **Lodash**: A utility library for working with arrays, objects, and other data structures.
+- **React Native Config**: For managing environment variables securely.
 
-# Troubleshooting
+## Project Structure
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+- `src/screens`: Contains the screens like `SearchScreen` and `PlaceDetailsScreen`.
+- `src/redux`: Contains Redux-related setup and logic.
+- `src/theme`: Contains theme-related constants like colors.
+- `src/config`: Contains configuration files such as API endpoints and environment variables.
+- `src/types`: Contains TypeScript type definitions and interfaces used throughout the app.
+- `src/components`: Contains reusable UI components like `Button`, `Card`, and `Header`.
 
-# Learn More
+## Secure Practices for API Keys
 
-To learn more about React Native, take a look at the following resources:
+To ensure the security of sensitive information like the Google Maps API key, the app uses the following practices:
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- The API key is stored in a `.env` file, which is included in `.gitignore` to prevent it from being pushed to version control.
+- The app utilizes the **React Native Config** library to access environment variables defined in the `.env` file. This allows secure access to the API key in both JavaScript and native code.
+
+For more information on setting up and using React Native Config, refer to the [React Native Config documentation](https://github.com/luggit/react-native-config).

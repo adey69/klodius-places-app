@@ -45,11 +45,11 @@ export const useSearchScreen = () => {
   const debouncedFetch = useCallback(debounce(fetchPredictions, 300), []);
 
   const handleInputChange = useCallback((text: string) => {
+    setSearchText(text);
     if (isSelecting.current) {
       isSelecting.current = false;
       return;
     }
-    setSearchText(text);
     if (!text) {
       setPredictions([]);
       return;

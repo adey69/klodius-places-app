@@ -82,5 +82,22 @@ export const useStyles = () => {
       height: 20,
       width: 20,
     },
+    globeImage: {
+      width: 100,
+      height: 100,
+      alignSelf: 'center',
+      opacity: 0.9,
+    },
+    tagline: {
+      textAlign: 'center',
+      fontSize: 13,
+      marginBottom: 16,
+    },
+    hitSlop: {
+      top: 10,
+      bottom: 10,
+      left: 10,
+      right: 10,
+    },
   });
 };

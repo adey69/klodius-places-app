@@ -20,8 +20,3 @@ interface Place {
   }[];
   types: string[];
 }
-
-interface PlacesAutocompleteResponse {
-  predictions: Place[];
-  status: string;
-}

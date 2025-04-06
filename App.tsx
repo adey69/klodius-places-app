@@ -5,9 +5,10 @@ import 'react-native-get-random-values';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import './gesture-handler';
+import { CreateStore } from './src/redux';
 import { PlaceDetailsScreen, SearchScreen } from './src/screens';
-import store from './src/store';
 import { Colors } from './src/theme';
+import { PersistGate } from 'redux-persist/integration/react';
 
 if (__DEV__) {
   require('./ReactotronConfig');
@@ -15,22 +16,28 @@ if (__DEV__) {
 
 export type RootStackParamList = {
   Search: undefined;
-  Map: { place: Place };
-  History: undefined;
+  PlaceDetails: { placeId: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
 
+const { reduxStore, persistor } = CreateStore();
+
 export default function App() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
-      <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Search">
-            <Stack.Screen name="Search" component={SearchScreen} />
-            <Stack.Screen name="PlaceDetails" component={PlaceDetailsScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
+      <Provider store={reduxStore}>
+        <PersistGate loading={null} persistor={persistor}>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name="Search" component={SearchScreen} />
+              <Stack.Screen
+                name="PlaceDetails"
+                component={PlaceDetailsScreen}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PersistGate>
       </Provider>
     </SafeAreaView>
   );

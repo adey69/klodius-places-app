@@ -1,44 +1,37 @@
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 import { debounce } from 'lodash';
 import { useCallback, useState } from 'react';
-import { GOOGLE_MAPS_API_KEY } from '../../config';
+import { useLazyAutocompleteQuery } from '../../redux';
 
 export const useSearchScreen = () => {
   const [searchText, setSearchText] = useState('');
   const [predictions, setPredictions] = useState<Place[]>([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const navigation = useNavigation();
+  const [fetchPlaces] = useLazyAutocompleteQuery();
 
-  const fetchPredictions = async (text: string) => {
+  const fetchPredictions = useCallback(async (text: string) => {
     if (!text) {
       setPredictions([]);
       return;
     }
 
     try {
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/autocomplete/json`,
-        {
-          params: {
-            input: text,
-            key: GOOGLE_MAPS_API_KEY,
-          },
-        },
-      );
+      const response = await fetchPlaces({ input: text }).unwrap();
 
-      if (response.data.status === 'OK') {
-        setPredictions(response.data.predictions);
+      if (response.predictions) {
+        setPredictions(response.predictions);
       } else {
         setPredictions([]);
-        console.warn('Places API error:', response.data.status);
+        console.warn('Places API error:', response.status);
       }
     } catch (err) {
       console.error('Autocomplete fetch error', err);
     }
-  };
+  }, []);
 
   const debouncedFetch = useCallback(debounce(fetchPredictions, 300), []);
+
   const handleInputChange = useCallback(
     (text: string) => {
       setSearchText(text);

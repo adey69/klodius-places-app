@@ -45,6 +45,17 @@ const SearchScreen = () => {
     [],
   );
 
+  const renderSuggestionsItem = useCallback(
+    ({ item }) => (
+      <TouchableOpacity
+        onPress={() => handleSelect(item)}
+        style={styles.predictionItem}>
+        <Text style={styles.predictionText}>{item.description}</Text>
+      </TouchableOpacity>
+    ),
+    [],
+  );
+
   const renderHistoryHeader = useCallback(
     () => <Text style={styles.header}>Recent Searches</Text>,
     [],
@@ -85,13 +96,7 @@ const SearchScreen = () => {
               style={styles.listContainer}
               contentContainerStyle={styles.listContentContainer}
               keyExtractor={item => item.place_id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => handleSelect(item)}
-                  style={styles.predictionItem}>
-                  <Text style={styles.predictionText}>{item.description}</Text>
-                </TouchableOpacity>
-              )}
+              renderItem={renderSuggestionsItem}
               bounces={false}
               keyboardShouldPersistTaps="handled"
             />

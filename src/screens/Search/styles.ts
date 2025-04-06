@@ -31,7 +31,7 @@ export const useStyles = () => {
       paddingVertical: 12,
     },
     predictionText: {
-      fontSize: 16,
+      fontSize: 14,
     },
     listContainer: {
       position: 'absolute',
@@ -47,9 +47,8 @@ export const useStyles = () => {
       borderColor: Colors.borderGray,
       borderBottomLeftRadius: 8,
       borderBottomRightRadius: 8,
-      ...Alignment.PTsmall,
+      ...Alignment.PTxSmall,
     },
-    inputFocusedListContainer: {},
     searchesListContainer: {
       ...Alignment.PVmedium,
     },
